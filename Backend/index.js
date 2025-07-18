@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import connection from './config/DBconection.js';
+import {syncTables} from './config/DbConnection.js';
 
 import dotenv from 'dotenv';
 
@@ -19,6 +19,8 @@ app.use(express.json());
 app.use(cors({
 //   origin: "http://localhost:3000"
 }));
+
+await syncTables()
 
 app.listen(PORT, () => {
   console.log(`Server running at ${PORT}`);
