@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/AppError.js';
 import { ERROR } from '../utils/HttpStatus.js';
+
+
 export const verifyToken=(req,res,next) => {
 const token =req.cookies.token
 if(!token)
@@ -16,6 +18,7 @@ try{
         return next(error);
     }
     req.userId=decoded.userId;
+    req.role=decoded.role;
     next();
 }catch(err){
     console.log("erorr in verifyToken",err);
@@ -23,3 +26,10 @@ try{
 
 }
 }
+
+export const isAdmin = (req, res, next) => {
+  if (req.role !== 'admin') {
+    return res.status(403).json({ message: "غير مصرح لك بتنفيذ هذا الإجراء" });
+  }
+  next();
+};
